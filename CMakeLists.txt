@@ -22,7 +22,7 @@ ExternalProject_Add(
 )
 ExternalProject_Add(
     ogremeshy
-    GIT_REPOSITORYhttps://github.com/AnotherFoxGuy/ogremeshy.git
+    GIT_REPOSITORY https://github.com/AnotherFoxGuy/ogremeshy.git
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     CMAKE_ARGS
