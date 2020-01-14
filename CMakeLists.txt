@@ -32,7 +32,7 @@ ExternalProject_Add(
 ExternalProject_Add_Step(
         rigs-of-rods zip_and_copy_resources
         COMMAND ${CMAKE_COMMAND}  --build . --target zip_and_copy_resources
-        DEPENDERS install
+        DEPENDEES install
 )
 
 ExternalProject_Add(
@@ -51,5 +51,5 @@ ExternalProject_Add(
 ExternalProject_Add_Step(
         ogremeshy copy_resources
         COMMAND ${CMAKE_COMMAND}  --build . --target copy_resources
-        DEPENDERS install
+        DEPENDEES install
 )
