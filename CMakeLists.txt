@@ -29,10 +29,12 @@ ExternalProject_Add(
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
 
+ExternalProject_Get_Property(rigs-of-rods BINARY_DIR)
+
 ExternalProject_Add_Step(
         rigs-of-rods zip_and_copy_resources
-        COMMAND ${CMAKE_COMMAND}  --build . --target zip_and_copy_resources
-        DEPENDEES install
+        COMMAND ${CMAKE_COMMAND}  --build ${BINARY_DIR} --target zip_and_copy_resources
+        DEPENDEES build
 )
 
 ExternalProject_Add(
@@ -47,9 +49,11 @@ ExternalProject_Add(
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
+
+ExternalProject_Get_Property(ogremeshy BINARY_DIR)
     
 ExternalProject_Add_Step(
         ogremeshy copy_resources
-        COMMAND ${CMAKE_COMMAND}  --build . --target copy_resources
-        DEPENDEES install
+        COMMAND ${CMAKE_COMMAND}  --build ${BINARY_DIR} --target copy_resources
+        DEPENDEES build
 )
