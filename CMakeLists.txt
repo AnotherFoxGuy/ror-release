@@ -3,8 +3,6 @@ include(ExternalProject)
 
 project(ror-release)
 
-
-
 file(DOWNLOAD "https://anotherfoxguy.com/pmm/pmm.cmake" "${CMAKE_BINARY_DIR}/pmm.cmake")
 include("${CMAKE_BINARY_DIR}/pmm.cmake")
 
@@ -29,6 +27,13 @@ ExternalProject_Add(
     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
+
+ExternalProject_Add_Step(
+        rigs-of-rods zip_and_copy_resources
+        COMMAND ${CMAKE_COMMAND}  --build . --target zip_and_copy_resources
+        DEPENDERS install
+)
+
 ExternalProject_Add(
     ogremeshy
     GIT_REPOSITORY https://github.com/AnotherFoxGuy/ogremeshy.git
@@ -42,4 +47,8 @@ ExternalProject_Add(
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
     
-    
+ExternalProject_Add_Step(
+        ogremeshy copy_resources
+        COMMAND ${CMAKE_COMMAND}  --build . --target copy_resources
+        DEPENDERS install
+)
