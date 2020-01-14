@@ -3,6 +3,8 @@ include(ExternalProject)
 
 project(ror-release)
 
+
+
 file(DOWNLOAD "https://anotherfoxguy.com/pmm/pmm.cmake" "${CMAKE_BINARY_DIR}/pmm.cmake")
 include("${CMAKE_BINARY_DIR}/pmm.cmake")
 
@@ -10,7 +12,8 @@ file(DOWNLOAD "https://github.com/RigsOfRods/rigs-of-rods/raw/master/conanfile.t
 
 pmm(CONAN REMOTES ror-dependencies https://api.bintray.com/conan/anotherfoxguy/ror-dependencies BINCRAFTERS)
 
-set(BLT_OUTPUT_DIR " ${CMAKE_BINARY_DIR}/redist")
+set(BLT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/redist")
+file(MAKE_DIRECTORY ${BLT_OUTPUT_DIR})
 set_property(DIRECTORY PROPERTY EP_BASE ${CMAKE_BINARY_DIR})
 
 ExternalProject_Add(
