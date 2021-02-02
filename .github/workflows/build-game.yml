@@ -41,14 +41,7 @@ jobs:
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 
-          cmake -G"NMake Makefiles JOM" -DCMAKE_BUILD_TYPE=Release -DBUILD_REDIST_FOLDER=ON -DFETCHCONTENT_QUIET=OFF .
-        shell: cmd
-
-      - name: Build
-        run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-
-          jom
+          cmake -G"NMake Makefiles JOM" -DCMAKE_BUILD_TYPE=Release -DBUILD_REDIST_FOLDER=ON -DFETCHCONTENT_QUIET=OFF -DRUN_PMM=ON .
         shell: cmd
 
       - name: Create redis folder
@@ -65,5 +58,5 @@ jobs:
           path: Rigs of Rods-2021.2.zip
 
       - name: Clean Conan pkgs
-        run: cmake -P ./cmake/3rdparty/pmm.cmake /Conan /Clean
+        run: cmake -P ./pmm.cmake /Conan /Clean
         shell: cmd
