@@ -62,6 +62,21 @@ ExternalProject_Add_Step(
     DEPENDEES build
 )
 
+# ExternalProject_Add(
+#     ror-server
+#     GIT_REPOSITORY https://github.com/RigsOfRods/ror-server.git
+#     GIT_TAG 3e8351ed2f9c6caff2f0796cf18c08d2407313f1
+#     GIT_SHALLOW TRUE
+#     GIT_PROGRESS TRUE
+#     CMAKE_ARGS
+#     -DRORSERVER_WITH_ANGELSCRIPT=ON
+#     -DCMAKE_INSTALL_PREFIX=${BLT_OUTPUT_DIR}
+#     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+#     -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+#     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+#     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+# )
+
 macro(dl_contentpack url name hash)
     FetchContent_Declare(
         ${name}

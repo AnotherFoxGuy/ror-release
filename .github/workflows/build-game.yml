@@ -6,7 +6,7 @@ on: push
 jobs:
   build-msvc:
     name: Windows build
-    runs-on: windows-latest
+    runs-on: windows-2016
     env:
       DXSDK_DIR: C:\apps\Microsoft DirectX SDK
       CONAN_PATH: C:\Program Files\Conan\conan\
@@ -39,14 +39,14 @@ jobs:
 
       - name: Configure
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 
           cmake -G"NMake Makefiles JOM" -DCMAKE_BUILD_TYPE=Release -DBUILD_REDIST_FOLDER=ON -DFETCHCONTENT_QUIET=OFF -DRUN_PMM=ON .
         shell: cmd
 
       - name: Create redis folder
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
 
           jom package
         shell: cmd
