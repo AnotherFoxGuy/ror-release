@@ -19,12 +19,16 @@ jobs:
         with:
           key: conan-root-${{ hashFiles('**/hash.txt') }}
           path: ~/.conan
+          restore-keys: |
+            conan-root-
 
       - name: Cache conan packages
         uses: actions/cache@v1
         with:
           key: conan-pkg-${{ hashFiles('**/hash.txt') }}
           path: C:/.conan/
+          restore-keys: |
+            conan-pkg-
 
       - name: Install Microsoft DirectX SDK and Build tools
         shell: cmake -P {0}
