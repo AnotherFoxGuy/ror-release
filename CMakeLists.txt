@@ -2,25 +2,27 @@ cmake_minimum_required(VERSION 3.14)
 include(ExternalProject)
 include(FetchContent)
 
-project("Rigs of Rods" VERSION "2021.02")
+project("Rigs of Rods" VERSION "2021.04")
 
 option(RUN_PMM "Run PMM" OFF)
 option(DOWNLOAD_CONTENTPACK "Download the ContentPacks" OFF)
 
 if(RUN_PMM)
     include("${CMAKE_SOURCE_DIR}/pmm.cmake")
-    file(DOWNLOAD "https://github.com/RigsOfRods/rigs-of-rods/raw/master/conanfile.txt" "${CMAKE_SOURCE_DIR}/conanfile.txt")
-    pmm(CONAN REMOTES ror-dependencies https://api.bintray.com/conan/anotherfoxguy/ror-dependencies BINCRAFTERS)
+    file(DOWNLOAD "https://raw.githubusercontent.com/AnotherFoxGuy/rigs-of-rods/to-cloudsmith/conanfile.txt" "${CMAKE_SOURCE_DIR}/conanfile.txt")
+    pmm(CONAN REMOTES rigs-of-rods-deps https://conan.cloudsmith.io/rigs-of-rods/deps/ BINCRAFTERS)
 endif()
 
 set(BLT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/redist")
 file(MAKE_DIRECTORY ${BLT_OUTPUT_DIR})
 set_property(DIRECTORY PROPERTY EP_BASE ${CMAKE_BINARY_DIR})
 
+file(READ ROR_GIT_TAG hash.txt)
+
 ExternalProject_Add(
     rigs-of-rods
     GIT_REPOSITORY https://github.com/RigsOfRods/rigs-of-rods.git
-    GIT_TAG 00a4f5ddfd85ab1c785e46c100947ad76a2376a3
+    GIT_TAG ${ROR_GIT_TAG}
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     CMAKE_ARGS
@@ -32,18 +34,10 @@ ExternalProject_Add(
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
 
-ExternalProject_Get_Property(rigs-of-rods BINARY_DIR)
-
-ExternalProject_Add_Step(
-    rigs-of-rods zip_and_copy_resources
-    COMMAND ${CMAKE_COMMAND} --build ${BINARY_DIR} --target zip_and_copy_resources
-    DEPENDEES build
-)
-
 ExternalProject_Add(
     ogremeshy
     GIT_REPOSITORY https://github.com/AnotherFoxGuy/ogremeshy.git
-    GIT_TAG b2604b60bf45ee09c2462a2d810c872c03a40d6f
+    GIT_TAG 8b815f62b00218672f56fa1449fa26d14cefaa15
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     CMAKE_ARGS
@@ -54,28 +48,20 @@ ExternalProject_Add(
     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
 
-ExternalProject_Get_Property(ogremeshy BINARY_DIR)
-    
-ExternalProject_Add_Step(
-    ogremeshy copy_resources
-    COMMAND ${CMAKE_COMMAND} --build ${BINARY_DIR} --target copy_resources
-    DEPENDEES build
+ExternalProject_Add(
+    ror-server
+    GIT_REPOSITORY https://github.com/RigsOfRods/ror-server.git
+    GIT_TAG 22d96fb4e304ed10981302049b0e324505488169
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    CMAKE_ARGS
+    -DRORSERVER_WITH_ANGELSCRIPT=ON
+    -DCMAKE_INSTALL_PREFIX=${BLT_OUTPUT_DIR}
+    -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+    -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
+    -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+    -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
 )
-
-# ExternalProject_Add(
-#     ror-server
-#     GIT_REPOSITORY https://github.com/RigsOfRods/ror-server.git
-#     GIT_TAG 3e8351ed2f9c6caff2f0796cf18c08d2407313f1
-#     GIT_SHALLOW TRUE
-#     GIT_PROGRESS TRUE
-#     CMAKE_ARGS
-#     -DRORSERVER_WITH_ANGELSCRIPT=ON
-#     -DCMAKE_INSTALL_PREFIX=${BLT_OUTPUT_DIR}
-#     -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
-#     -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
-#     -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
-#     -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
-# )
 
 macro(dl_contentpack url name hash)
     FetchContent_Declare(
@@ -99,7 +85,7 @@ endif()
 
 INSTALL(
     DIRECTORY ${BLT_OUTPUT_DIR}/
-    DESTINATION ./
+    DESTINATION .
     USE_SOURCE_PERMISSIONS
     PATTERN "*.lib" EXCLUDE
 )
