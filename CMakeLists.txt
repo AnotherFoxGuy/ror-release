@@ -17,11 +17,11 @@ set(BLT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/redist")
 file(MAKE_DIRECTORY ${BLT_OUTPUT_DIR})
 set_property(DIRECTORY PROPERTY EP_BASE ${CMAKE_BINARY_DIR})
 
-file(READ ROR_GIT_TAG hash.txt)
+file(READ hash.txt ROR_GIT_TAG)
 
 ExternalProject_Add(
     rigs-of-rods
-    GIT_REPOSITORY https://github.com/RigsOfRods/rigs-of-rods.git
+    GIT_REPOSITORY https://github.com/AnotherFoxGuy/rigs-of-rods.git
     GIT_TAG ${ROR_GIT_TAG}
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
