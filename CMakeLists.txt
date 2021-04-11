@@ -9,8 +9,8 @@ option(DOWNLOAD_CONTENTPACK "Download the ContentPacks" OFF)
 
 if(RUN_PMM)
     include("${CMAKE_SOURCE_DIR}/pmm.cmake")
-    file(DOWNLOAD "https://raw.githubusercontent.com/AnotherFoxGuy/rigs-of-rods/to-cloudsmith/conanfile.txt" "${CMAKE_SOURCE_DIR}/conanfile.txt")
-    pmm(CONAN REMOTES rigs-of-rods-deps https://conan.cloudsmith.io/rigs-of-rods/deps/ BINCRAFTERS)
+    file(DOWNLOAD "https://raw.githubusercontent.com/RigsOfRods/rigs-of-rods/master/conanfile.txt" "${CMAKE_SOURCE_DIR}/conanfile.txt")
+    pmm(CONAN REMOTES ror-dependencies https://api.bintray.com/conan/anotherfoxguy/ror-dependencies BINCRAFTERS)
 endif()
 
 set(BLT_OUTPUT_DIR "${CMAKE_BINARY_DIR}/redist")
@@ -21,7 +21,7 @@ file(READ hash.txt ROR_GIT_TAG)
 
 ExternalProject_Add(
     rigs-of-rods
-    GIT_REPOSITORY https://github.com/AnotherFoxGuy/rigs-of-rods.git
+    GIT_REPOSITORY https://github.com/RigsOfRods/rigs-of-rods.git
     GIT_TAG ${ROR_GIT_TAG}
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
@@ -37,7 +37,7 @@ ExternalProject_Add(
 ExternalProject_Add(
     ogremeshy
     GIT_REPOSITORY https://github.com/AnotherFoxGuy/ogremeshy.git
-    GIT_TAG 8b815f62b00218672f56fa1449fa26d14cefaa15
+    GIT_TAG b2604b60bf45ee09c2462a2d810c872c03a40d6f
     GIT_SHALLOW TRUE
     GIT_PROGRESS TRUE
     CMAKE_ARGS
